@@ -1,19 +1,21 @@
 const express = require('express')
-const morgan = require('morgan')
-const contactRoutes = require('./contactRoutes')
+const bodyParser = require('body-parser')
 
 const app = express()
-app.use(morgan('dev'))
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+//bodyparser
+app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/contacts', contactRoutes)
+//root
+app.get('/',function(req,res) {
+    res.sendFile(__dirname + '/index.html')
+})
 
-app.get('*', (req, res) =>
-    res.send('Please use the correct Routes')
-)
-
+app.post('/',function(req,res) {
+    let {num1, num2} = req.body
+    let result = Number(num1) + Number(num2)
+    res.send(`The result of the Calculation is ${result}`)
+})
 
 const PORT = process.env.PORT || 5000
 
